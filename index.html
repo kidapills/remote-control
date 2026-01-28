@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Remote Control</title>
+</head>
+<body>
+    <h2>Онлайн компьютеры</h2>
+
+    {% for cid in clients %}
+        <div>
+            <b>{{ cid }}</b>
+            <button onclick="send('{{ cid }}','notepad')">Notepad</button>
+            <button onclick="send('{{ cid }}','calc')">Calc</button>
+        </div>
+    {% else %}
+        <p>Нет подключений</p>
+    {% endfor %}
+
+    <script>
+        function send(id, cmd) {
+            fetch("/send_cmd", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({id: id, cmd: cmd})
+            });
+        }
+    </script>
+</body>
+</html>
